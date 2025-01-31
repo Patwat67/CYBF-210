@@ -1,2 +1,7 @@
-.venv
-.idea
+.venv/
+.idea/
+venv/
+venv
+.idea/CYBF-210.iml
+.idea/misc.xml
+.idea/workspace.xml

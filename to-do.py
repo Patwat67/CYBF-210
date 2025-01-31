@@ -1,6 +1,4 @@
 import sqlite3
-from unittest import case
-
 
 def isValidSQLType(type:str) -> bool:
     if type in ["TEXT", "REAL", "INTEGER", "BLOB"]:
