@@ -93,7 +93,7 @@ def user_prompt_validation(prompt:str, desired_type:type=str, comma_seperated:st
 
     return result
 
-# Prompts user to continue then clears screen
+# Prompts user to continue
 def user_continue_prompt():
     input("Enter any key to continue: ")
 
@@ -115,9 +115,10 @@ def user_interface():
 
         # Runs the corresponding function based on the users selection
         match menu_input:
+            # adds student to grade book
             case '1':
-                # Adds a student and their grades to students_grades
                 try:
+                    # takes in students name and grade then calls add_student
                     student_name = user_prompt_validation("Enter student name: ", str)
                     grades = user_prompt_validation("Enter grades (comma seperated): ", int, ',')
                     add_student(student_name, grades)
@@ -125,31 +126,37 @@ def user_interface():
                     user_continue_prompt()
                 except Exception as e:
                     print(f"Error occurred: {e}")
+
             # Lists students are their grades
             case '2':
                 view_students()
                 user_continue_prompt()
+
             # Lists students average grades
             case '3':
+                # iterates through students_grades, formats the info and calculates their average based w calculate_average_grade
                 for entry in students_grades:
                     name = entry['name']
                     grades = entry['grades']
                     print(f"{name} has an average of {calculate_average_grade(grades)}")
                 user_continue_prompt()
+
             # Finds student with highest grade
             case '4':
                 find_highest_grade()
                 user_continue_prompt()
+
             # Finds student with lowest grade
             case '5':
                 find_lowest_grade()
                 user_continue_prompt()
+
             # Lists students by average in ascending or descending order
             case '6':
                 while True:
                     try:
+                        # grabs desired order and calls sort_students_by_average based on it, then formats/prints whats returned
                         order = user_prompt_validation("Sort Students by Average Grade (1 for descending, 2 for ascending): ", int)
-
                         match order:
                             case 1:
                                 students_by_average = sort_students_by_average(True)
@@ -170,25 +177,33 @@ def user_interface():
 
                     except ValueError as e:
                         print(f"ValueError during case 6: {e}")
+
+            # Removes student from list
             case '7':
-                # Removes student from list
                 try:
+                    # grabs students name and runs the remove_student func
                     student_name = user_prompt_validation("Enter a student name to remove: ", str)
                     remove_student(student_name)
                     print(f"Removed {student_name}")
                     user_continue_prompt()
                 except Exception as e:
                     print(f"An error has occurred: {e}")
+
             # Exits program
             case '8':
                 raise KeyboardInterrupt
+
+            # catches invalid inputs
             case _:
                 print(f"{menu_input} is not a valid input")
                 user_continue_prompt()
 
+# entrypoint
 if __name__ == '__main__':
     try:
+        # runs the user interface loop
         user_interface()
     except KeyboardInterrupt:
+        # Exits gracefully
         print("\nExiting...")
         exit(0)
