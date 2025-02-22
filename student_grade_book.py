@@ -1,4 +1,4 @@
-import os
+# Student grade book, exercise 3
 
 #Initializing the dictionary with students and their grades
 students_grades = [
