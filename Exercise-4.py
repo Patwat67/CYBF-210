@@ -20,9 +20,6 @@ class Stack:
         else:
             return False
 
-test = Stack()
-test.is_empty()
-
 class StringReverse:
     # Inits a private stack object and takes in a string
     def __init__(self, string:str):
@@ -46,29 +43,17 @@ class StringReverse:
         # Turns result list back into a string and returns it
         return ''.join(result)
 
-
-
-test_stack = Stack()
-print(test_stack.is_empty())
-test_stack.push('a')
-test_stack.push('b')
-test_stack.push('c')
-print(test_stack.is_empty())
-print(test_stack.pop())
-print(test_stack.pop())
-print(test_stack.pop())
-
-
-# if __name__ == "__main__":
-#     try:
-#         # Input string
-#         test_string = "Wow this is a cool string"
-#         # StringReverse object
-#         test = StringReverse(test_string)
-#         # Calls reverse_string method
-#         reversed_string = test.reverse_string()
-#         # Prints out result
-#         print(f"Original string: {test.string}\n"
-#               f"Reversed string: {reversed_string}")
-#     except KeyboardInterrupt:
-#         exit(1)
+# Entrypoint
+if __name__ == "__main__":
+    try:
+        # Input string
+        test_string = "Wow this is a cool string"
+        # StringReverse object
+        test = StringReverse(test_string)
+        # Calls reverse_string method
+        reversed_string = test.reverse_string()
+        # Prints out result
+        print(f"Original string: {test.string}\n"
+              f"Reversed string: {reversed_string}")
+    except KeyboardInterrupt:
+        exit(1)
