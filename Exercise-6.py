@@ -1,6 +1,3 @@
-from time import time
-
-
 class Node:
     def __init__(self, data):
         self.data = data
@@ -8,222 +5,66 @@ class Node:
 
 class LinkedList:
     def __init__(self):
-        self.head = None
+        self.front = None # pointer to first node
+        self.tail = None # pointer to last node
+        self.count = 0 # counter for convenience
 
     def insert_left(self, data):
-        node = Node(data)
-        if self.head is None:
-            self.head = node
-        else:
-            node.next = self.head
-            self.head = node
-
-    def insert_right(self, data):
-        node = Node(data)
-        if self.head is None:
-            self.head = node
-            return
-        last = self.head
-        while last.next is not None:
-            last = last.next
-        last.next = node
-
-    def delete_left(self):
-        if self.head is None:
-            return IndexError
-        temp = self.head
-        self.head = self.head.next
-        temp.next = None
-
-    def delete_right(self):
-        if self.head is None:
-            return IndexError
-        last = self.head
-        while last.next is not None and last.next.next is not None:
-            last = last.next
-        last.next = None
-
-    def peek_left(self):
-        if self.head is None:
-            raise IndexError
-        return self.head.data
-
-    def peek_right(self):
-        if self.head is None:
-            raise IndexError
-        last = self.head
-        while last.next is not None:
-            last = last.next
-        return last.data
-
-    def __str__(self):
-        data = []
-        temp = self.head
-        while temp is not None:
-            data.append(temp.data)
-        return ' -> '.join(data for data in data)
-
-
-class DoubleNode(Node):
-    def __init__(self, data):
-        super().__init__(data)
-        self.prev = None
-
-class DoublyLinkedListOptimized:
-    def __init__(self):
-        self.front = None
-        self.back = None
-
-    def insert_left(self, data):
-        node = DoubleNode(data)
-        if self.front is None:
-            self.front = self.back = node
-        else:
-            self.front.prev = node
+        node = Node(data) # creates a new node obj with supplied data
+        if self.count == 0: # if ll is empty, set both pointers to it
+            self.front = self.tail = node
+        else: # else, set new nodes next to current front pointer, then update front pointer
             node.next = self.front
             self.front = node
-
-    def insert_right(self, data):
-        node = DoubleNode(data)
-        if self.back is None:
-            self.front = self.back = node
-        else:
-            self.back.next = node
-            node.prev = self.back
-            self.back = node
-
-    def delete_left(self):
-        if self.front is None:
-            return
-        else:
-            temp = self.front
-            if self.front.next is not None:
-                self.front = self.front.next
-                self.front.prev = None
-            else:
-                self.front = None
-                self.back = None
-            temp.next = None
-
-    def delete_right(self):
-        if self.back is None:
-            return
-        else:
-            temp = self.back
-            if self.back.prev is not None:
-                self.back = self.back.prev
-                self.back.next = None
-            else:
-                self.back = self.front = None
-            temp.prev = None
-
-    def peek_left(self):
-        if self.front is None:
-            raise IndexError
-        else:
-            return self.front.data
-
-    def peek_right(self):
-        if self.back is None:
-            raise IndexError
-        else:
-            return self.back.data
-
-    def __str__(self):
-        values = []
-        current = self.front
-        while current is not None:
-            values.append(str(current.data))
-            current = current.next
-        return ' <-> '.join(values)
-
-class LinkedListOptimized:
-    def __init__(self):
-        self.front = None
-        self.tail = None
-
-    def insert_left(self, data):
-        node = Node(data)
-        if self.front is None:
-            self.front = self.tail = node
-        else:
-            self.front.next = node
-            self.front = node
+        self.count += 1 # increment counter to reflect new node
 
     def insert_right(self, data):
         node = Node(data)
-        if self.tail is None:
+        if self.count == 0:
             self.front = self.tail = node
-        else:
+        else: # else, set tails next to new node, before updating new node
             self.tail.next = node
             self.tail = node
+        self.count += 1
 
     def delete_left(self):
-        if self.front is None:
-            return IndexError
-        else:
+        if self.count == 0: # return none if list is empty
+            return
+        else: # creates temp pointer to track of the node to be deleted, then removes nodes next pointer and updates front pointer
             temp = self.front
             self.front = self.front.next
             temp.next = None
+        self.count -= 1 # dec count then null front and tail pointer if list is now empty
+        if self.count == 0:
+            self.front = self.tail = None
 
     def delete_right(self):
-        if self.front is None:
-            return IndexError
-        last = self.front
+        if self.count == 0:
+            return
+        last = self.front #
         while last.next is not None and last.next.next is not None:
             last = last.next
         last.next = None
+        self.count -= 1
+        if self.count == 0:
+            self.front = self.tail = None
 
+    def __str__(self):
+        data = []
+        temp = self.front
+        while temp is not None:
+            data.append(str(temp.data))
+            temp = temp.next
+        return ' -> '.join(data)
 
-def timer(func):
-    def wrapper(*args, **kwargs):
-        start = time()
-        result = func(*args, **kwargs)
-        end = time()
-        print(f"{func.__name__}{args}{kwargs} took", (end - start) * 1000, "ms")
-        return result
-    return wrapper
-
-@timer
-def llisttest(nodes:int):
-    llist = LinkedList()
-    for i in range(nodes):
-        llist.insert_left(i)
-        llist.insert_right(i)
-    for i in range(nodes):
-        llist.delete_left()
-        llist.delete_right()
-
-@timer
-def dllisttest(nodes):
-    dllist = DoublyLinkedListOptimized()
-    for i in range(nodes):
-        dllist.insert_left(i)
-        dllist.insert_right(i)
-        dllist.delete_right()
-        dllist.delete_left()
-
-@timer
-def llistoptimizedtest(nodes):
-    llist = LinkedListOptimized()
-    for i in range(nodes):
-        llist.insert_left(i)
-        llist.insert_right(i)
-    for i in range(nodes):
-        llist.delete_left()
-        llist.delete_right()
-
-llist = LinkedList()
-llistoptimized = LinkedListOptimized()
-
-llist.insert_left(1)
-llist.insert_right(2)
-llist.insert_right(3)
-llist.delete_right()
-print(llist)
-
-llistoptimized.insert_left(1)
-llistoptimized.insert_right(2)
-llistoptimized.insert_right(3)
-llistoptimized.delete_right()
-print(llistoptimized)
+ll = LinkedList()
+ll.insert_left(1)
+print(ll)
+ll.insert_left(2)
+print(ll)
+ll.insert_right(3)
+print(ll)
+ll.delete_right()
+print(ll)
+ll.delete_left()
+print(ll)
