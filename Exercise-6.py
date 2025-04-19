@@ -1,7 +1,7 @@
-class Node:
+class Node: # Node class
     def __init__(self, data):
-        self.data = data
-        self.next = None
+        self.data = data # stores node data
+        self.next = None # stores pointer to next node
 
 class LinkedList:
     def __init__(self):
@@ -41,30 +41,32 @@ class LinkedList:
     def delete_right(self):
         if self.count == 0:
             return
-        last = self.front #
-        while last.next is not None and last.next.next is not None:
+        last = self.front # makes a temp pointer "last" to walk the list
+        while last.next is not None and last.next.next is not None: # walks list until second to last node
             last = last.next
-        last.next = None
-        self.count -= 1
+        last.next = None # seconds second to last nodes next pointer to none
+        self.count -= 1 # dec counter then clears front and tail pointers if list is empty
         if self.count == 0:
             self.front = self.tail = None
 
-    def __str__(self):
+    def __str__(self): # handles visualizing the llist
         data = []
-        temp = self.front
+        temp = self.front # creates temp pointer to walk list
         while temp is not None:
-            data.append(str(temp.data))
+            data.append(str(temp.data)) # converts node data to str and appends it to list
             temp = temp.next
-        return ' -> '.join(data)
+        return ' -> '.join(data) # joins all data and visualizes it with a pointer
 
-ll = LinkedList()
-ll.insert_left(1)
-print(ll)
-ll.insert_left(2)
-print(ll)
-ll.insert_right(3)
-print(ll)
-ll.delete_right()
-print(ll)
-ll.delete_left()
-print(ll)
+# Entrypoint
+if __name__ == '__main__':
+    ll = LinkedList()
+    ll.insert_left(1)
+    print(ll)
+    ll.insert_left(2)
+    print(ll)
+    ll.insert_right(3)
+    print(ll)
+    ll.delete_right()
+    print(ll)
+    ll.delete_left()
+    print(ll)

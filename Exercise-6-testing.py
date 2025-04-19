@@ -1,6 +1,5 @@
 import sys
 from time import time, sleep
-from tqdm import tqdm
 
 class Node:
     def __init__(self, data):
